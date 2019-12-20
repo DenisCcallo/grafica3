@@ -3,7 +3,7 @@ Curva de Bezier
 
 
 **Tabla de Contenido**
-- Jurva de Bezier
+- Curva de Bezier
 
 
 
