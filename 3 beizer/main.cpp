@@ -6,9 +6,8 @@
 #include<stdlib.h>
 #include <iostream>
 using namespace std;
-/* Establece el tamaño inicial de la ventana de visualizacion. */
-GLsizei winWidth=600, winHeight =600;
 
+GLsizei winWidth=600, winHeight =600;
 int x1=-1,y1=-1;
 int coor=0;
 
@@ -20,24 +19,20 @@ class wcPt3D {
 GLint n_CtrlPts = 100, nBezCurvePts = 1000;
 wcPt3D ctrlPts [100];
 
-void init (void)
-{
-    /* Establece el color de la ventana de visualizacion en blanco. */
+void init (void){
     glClearColor (1.0, 1.0, 1.0, 1.0);
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0.0, 200.0, 0.0, 150.0);
 }
 
-void displayFcn (void)
-{
-    glClear (GL_COLOR_BUFFER_BIT); // Borra la ventana de visualización.
-    glColor3f (1.0, 0.0, 0.0); // Establece el color de los puntos en rojo.
+void displayFcn (void){
+    glClear (GL_COLOR_BUFFER_BIT);
+    glColor3f (1.0, 0.0, 0.0);
     glPointSize (3.0);
 }
 
 void winReshapeFcn (GLint newWidth, GLint newHeight)
 {
-    /* Mantiene una relación de aspeto de valor 1.0. */
     glViewport (0, 0, newHeight, newHeight);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ( );
@@ -59,12 +54,10 @@ void plotPt2(GLint x, GLint y)
     glEnd();
 }
 
-/* Calcula los coeficientes binomiales C para un valor dado de n. */
 void binomialCoeffs (GLint n, GLint * C)
 {
     GLint k, j;
     for (k = 0; k <= n; k++) {
-        /* Compute n!/(k!(n - k)!). */
         C [k] = 1;
         for (j = n; j >= k + 1; j--)
             C [k] *= j;
@@ -79,8 +72,6 @@ wcPt3D * ctrlPts, GLint * C)
     GLint k, n = nCtrlPts - 1;
     GLfloat bezBlendFcn;
     bezPt->x = bezPt->y = bezPt->z = 0.0;
-    /* Calcula las funciones de combinación y los puntos de control de
-    combinación. */
     for (k = 0; k < nCtrlPts; k++) {
         bezBlendFcn = C [k] * pow (u, k) * pow (1 - u, n - k);
         bezPt->x += ctrlPts [k].x * bezBlendFcn;
@@ -94,7 +85,6 @@ void bezier (wcPt3D * ctrlPts, GLint nCtrlPts, GLint nBezCurvePts)
     wcPt3D bezCurvePt;
     GLfloat u;
     GLint *C, k;
-    /* Reserva espacio para los coeficientes binomiales */
     C = new GLint [nCtrlPts];
     binomialCoeffs (nCtrlPts - 1, C);
     for (k = 0; k <= nBezCurvePts; k++) {
@@ -107,7 +97,7 @@ void bezier (wcPt3D * ctrlPts, GLint nCtrlPts, GLint nBezCurvePts)
 
 void mousePtPlot(GLint button , GLint action , GLint xMouse, GLint yMouse)
 {
-    if(button==GLUT_LEFT_BUTTON && action==GLUT_DOWN) //GLUT_RIGHT_BUTTON
+    if(button==GLUT_LEFT_BUTTON && action==GLUT_DOWN)
     {
 
         printf("obtiene coordenada: ");
@@ -131,10 +121,10 @@ void mousePtPlot(GLint button , GLint action , GLint xMouse, GLint yMouse)
         plotPt2(x1,y1);
         cout<<ctrlPts[coor].x<<" - "<<ctrlPts[coor].y<<endl;
         coor++;
+        cout<<"Graficando la curva de Bezier :)"<<endl;
         bezier (ctrlPts, coor, nBezCurvePts);
     }
     glFlush();
-
 }
 
 
@@ -153,3 +143,4 @@ int main(int argc, char** argv)
     glutMainLoop ( );
     return 0;
 }
+
